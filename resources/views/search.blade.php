@@ -1,63 +1,73 @@
-@extends('layouts.app') <!-- Extends the base layout to inherit the common page structure -->
+@extends('layouts.app')
 
-@section('content') <!-- Start of the content section that will be injected into the layout's content area -->
+@section('content')
 
-    <h1>Search Shoes</h1> 
+    <!-- Page Heading for Shoe Search -->
+    <h1>Search Shoes</h1>
 
-    <!-- Display a success message if the session has a 'success' key -->
+    <!-- Display Success Message if Present in Session -->
     @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
-    
-    <!-- Form to filter shoes by various criteria -->
-    <form action="{{ route('search') }}" method="GET" class="mb-3">
+
+    <!-- Filter Form for Shoe Search -->
+    <form action="{{ route('search') }}" method="GET" class="filter-form">
         <div class="card p-3">
             <div class="row g-2">
-                <!-- Name Filter: Text input to search by shoe name -->
-                <div class="col-md-4 col-lg-2">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" id="name" name="name" class="form-control" placeholder="Name" value="{{ request('name') }}">
+
+                <!-- Filter by Shoe Name -->
+                <div class="col">
+                    <label for="name">Name</label>
+                    <!-- Text input for shoe name, with the value pre-filled based on current request parameters -->
+                    <input type="text" id="name" name="name" placeholder="Name" value="{{ request('name') }}">
                 </div>
-                
-                <!-- Brand Filter: Dropdown allowing multiple brands to be selected -->
-                <div class="col-md-4 col-lg-2">
-                    <label for="brand" class="form-label">Brand</label>
-                    <select id="brand" name="brand[]" class="form-control" multiple>
-                        @foreach($brands as $brand) <!-- Loop through available brands -->
+
+                <!-- Filter by Shoe Brand -->
+                <div class="col">
+                    <label for="brand">Brand</label>
+                    <!-- Multi-select dropdown for selecting brands, values populated from $brands array -->
+                    <select id="brand" name="brand[]" multiple>
+                        @foreach($brands as $brand)
+                            <!-- Select the option if it matches one of the currently selected brands -->
                             <option value="{{ $brand }}" {{ in_array($brand, request('brand', [])) ? 'selected' : '' }}>{{ ucfirst($brand) }}</option>
                         @endforeach
                     </select>
-                    <small class="form-text text-muted">Hold Ctrl</small> <!-- Message for Ctrl selection -->
+                    <small>Hold Ctrl</small>
                 </div>
-                
-                <!-- Type Filter: Dropdown to select shoe type -->
-                <div class="col-md-4 col-lg-2">
-                    <label for="type" class="form-label">Type</label>
-                    <select id="type" name="type" class="form-control">
+
+                <!-- Filter by Shoe Type -->
+                <div class="col">
+                    <label for="type">Type</label>
+                    <!-- Dropdown for selecting shoe type, with options populated from $types array -->
+                    <select id="type" name="type">
                         <option value="">Select Type</option>
-                        @foreach($types as $type) <!-- Loop through available types -->
+                        @foreach($types as $type)
+                            <!-- Mark the option as selected if it matches the current selection -->
                             <option value="{{ $type }}" {{ request('type') == $type ? 'selected' : '' }}>{{ ucfirst($type) }}</option>
                         @endforeach
                     </select>
                 </div>
-                
-                <!-- Material Filter: Dropdown allowing multiple materials to be selected -->
-                <div class="col-md-4 col-lg-2">
-                    <label for="material" class="form-label">Material</label>
-                    <select id="material" name="material[]" class="form-control" multiple>
-                        @foreach($materials as $material) <!-- Loop through available materials -->
+
+                <!-- Filter by Material -->
+                <div class="col">
+                    <label for="material">Material</label>
+                    <!-- Multi-select dropdown for selecting materials, values populated from $materials array -->
+                    <select id="material" name="material[]" multiple>
+                        @foreach($materials as $material)
+                            <!-- Select the option if it matches one of the currently selected materials -->
                             <option value="{{ $material }}" {{ in_array($material, request('material', [])) ? 'selected' : '' }}>{{ ucfirst($material) }}</option>
                         @endforeach
                     </select>
-                    <small class="form-text text-muted">Hold Ctrl</small> <!-- Message for Ctrl selection -->
+                    <small>Hold Ctrl</small>
                 </div>
 
-                <!-- Price Range Filter: Dropdown to select price range -->
-                <div class="col-md-4 col-lg-2">
-                    <label for="price" class="form-label">Price Range</label>
-                    <select id="price" name="price" class="form-control">
+                <!-- Filter by Price Range -->
+                <div class="col">
+                    <label for="price">Price Range</label>
+                    <!-- Dropdown for selecting price range, each option corresponds to a specific range -->
+                    <select id="price" name="price">
                         <option value="">Price Range</option>
                         <option value="under50" {{ request('price') == 'under50' ? 'selected' : '' }}>Less than 50</option>
                         <option value="50to100" {{ request('price') == '50to100' ? 'selected' : '' }}>50 - 100</option>
@@ -67,31 +77,31 @@
                     </select>
                 </div>
 
-                <!-- Colour Filter: Dropdown allowing multiple colours to be selected -->
-                <div class="col-md-4 col-lg-2">
-                    <label for="colours" class="form-label">Colour</label>
-                    <select id="colours" name="colours[]" class="form-control" multiple>
-                        @foreach($colours as $colour) <!-- Loop through available colours -->
+                <!-- Filter by Colour -->
+                <div class="col">
+                    <label for="colours">Colour</label>
+                    <!-- Multi-select dropdown for selecting colours, values populated from $colours array -->
+                    <select id="colours" name="colours[]" multiple>
+                        @foreach($colours as $colour)
+                            <!-- Select the option if it matches one of the currently selected colours -->
                             <option value="{{ $colour }}" {{ in_array($colour, request('colours', [])) ? 'selected' : '' }}>{{ ucfirst($colour) }}</option>
                         @endforeach
                     </select>
-                    <small class="form-text text-muted">Hold Ctrl</small> <!-- Message for Ctrl selection -->
+                    <small>Hold Ctrl</small>
                 </div>
             </div>
 
-            <!-- Submit Button Row - Centered -->
-            <div class="row mt-3 justify-content-center">
-                <div class="col-md-4 col-lg-2 d-flex">
-                    <button type="submit" class="btn btn-primary w-100">Filter</button> <!-- Submit button to apply filters -->
-                </div>
+            <!-- Submit Button to Apply Filters -->
+            <div class="button-row">
+                <button type="submit" class="btn">Filter</button>
             </div>
         </div>
     </form>
 
-    <!-- Shoes Table: Display the filtered list of shoes -->
-    @if($shoes->count()) <!-- Check if there are any shoes to display -->
+    <!-- Display Results in a Table if Shoes are Found -->
+    @if($shoes->count())
         <div class="table-responsive">
-            <table class="table table-bordered mt-4">
+            <table class="table">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -102,12 +112,13 @@
                         <th>Colour</th>
                         <th>Stock</th>
                         <th>Release Date</th>
-                        <th>Actions</th> <!-- Action buttons for each shoe (edit and delete) -->
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($shoes as $shoe) <!-- Loop through the list of filtered shoes -->
+                    @foreach($shoes as $shoe)
                         <tr>
+                            <!-- Display each attribute of the shoe -->
                             <td>{{ $shoe->name }}</td>
                             <td>{{ $shoe->brand }}</td>
                             <td>{{ $shoe->type }}</td>
@@ -117,11 +128,13 @@
                             <td>{{ $shoe->stock }}</td>
                             <td>{{ $shoe->release_date }}</td>
                             <td>
-                                <a href="{{ route('edit', $shoe->product_code) }}" class="btn btn-warning btn-sm">Edit</a> <!-- Edit button -->
-                                <form action="{{ route('delete', $shoe->product_code) }}" method="POST" style="display:inline-block;"> <!-- Delete form -->
+                                <!-- Edit Button links to edit route -->
+                                <a href="{{ route('edit', $shoe->product_code) }}" class="btn btn-warning">Edit</a>
+                                <!-- Delete Button posts to delete route, with CSRF token and DELETE method -->
+                                <form action="{{ route('delete', $shoe->product_code) }}" method="POST" style="display:inline-block;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button> <!-- Delete button -->
+                                    <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
                             </td>
                         </tr>
@@ -130,13 +143,14 @@
             </table>
         </div>
 
-        <!-- Pagination for the shoes list -->
+        <!-- Pagination Links, with Current Query Parameters Preserved -->
         <div class="d-flex justify-content-center mt-3">
-        <!-- Pagination links with query parameters preserved -->
-        {{ $shoes->appends(request()->query())->links('pagination::bootstrap-4') }} 
+            {{ $shoes->appends(request()->query())->links() }} 
         </div>
+
+    <!-- Message when No Shoes are Found -->
     @else
-        <p class="text-center">No shoes found.</p> <!-- Message displayed if no shoes are found -->
+        <p>No shoes found.</p>
     @endif
 
-@endsection <!-- End of content section -->
+@endsection
