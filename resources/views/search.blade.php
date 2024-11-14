@@ -14,18 +14,16 @@
 
     <!-- Filter Form for Shoe Search -->
     <form action="{{ route('search') }}" method="GET" class="filter-form">
-        <div class="card p-3">
-            <div class="row g-2">
-
+        <div class="card">
                 <!-- Filter by Shoe Name -->
-                <div class="col">
+                <div>
                     <label for="name">Name</label>
                     <!-- Text input for shoe name, with the value pre-filled based on current request parameters -->
                     <input type="text" id="name" name="name" placeholder="Name" value="{{ request('name') }}">
                 </div>
 
                 <!-- Filter by Shoe Brand -->
-                <div class="col">
+                <div>
                     <label for="brand">Brand</label>
                     <!-- Multi-select dropdown for selecting brands, values populated from $brands array -->
                     <select id="brand" name="brand[]" multiple>
@@ -38,7 +36,7 @@
                 </div>
 
                 <!-- Filter by Shoe Type -->
-                <div class="col">
+                <div>
                     <label for="type">Type</label>
                     <!-- Dropdown for selecting shoe type, with options populated from $types array -->
                     <select id="type" name="type">
@@ -51,7 +49,7 @@
                 </div>
 
                 <!-- Filter by Material -->
-                <div class="col">
+                <div>
                     <label for="material">Material</label>
                     <!-- Multi-select dropdown for selecting materials, values populated from $materials array -->
                     <select id="material" name="material[]" multiple>
@@ -64,7 +62,7 @@
                 </div>
 
                 <!-- Filter by Price Range -->
-                <div class="col">
+                <div>
                     <label for="price">Price Range</label>
                     <!-- Dropdown for selecting price range, each option corresponds to a specific range -->
                     <select id="price" name="price">
@@ -78,7 +76,7 @@
                 </div>
 
                 <!-- Filter by Colour -->
-                <div class="col">
+                <div>
                     <label for="colours">Colour</label>
                     <!-- Multi-select dropdown for selecting colours, values populated from $colours array -->
                     <select id="colours" name="colours[]" multiple>
@@ -143,10 +141,7 @@
             </table>
         </div>
 
-        <!-- Pagination Links, with Current Query Parameters Preserved -->
-        <div class="d-flex justify-content-center mt-3">
-            {{ $shoes->appends(request()->query())->links() }} 
-        </div>
+        {{ $shoes->links('pagination.custom') }}
 
     <!-- Message when No Shoes are Found -->
     @else

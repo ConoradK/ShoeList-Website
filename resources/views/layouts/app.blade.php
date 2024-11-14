@@ -221,6 +221,49 @@
             margin-bottom: 15px;
         }
 
+
+        /* Pagination container */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 5px;
+        }
+
+        /* Styles for all pagination links and spans */
+        .pagination a, .pagination span {
+            padding: 8px 12px;
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #ccc;
+            transition: background-color 0.3s;
+        }
+
+        /* Make non-current page buttons white */
+        .pagination .inactive {
+            background-color: white;  /* White background for non-current page buttons */
+        }
+
+        /* Hover effect for pagination links */
+        .pagination a:hover {
+            background-color: #ddd;
+        }
+
+        /* Active page styles */
+        .pagination .active {
+            font-weight: bold;
+            color: #fff;
+            background-color: #333;
+        }
+
+        /* Disabled pagination items */
+        .pagination .disabled {
+            color: #ccc;
+            pointer-events: none;
+        }
+
+
+
     </style>
 </head>
 <body>
