@@ -27,7 +27,7 @@ This is a web application for Shoeshop, featuring Home, Create, Search, and Edit
      
 ### 2. **Input Validation**
    - **Form Input Validation**: Each filter option is marked as required in the HTML input/select tags.
-   ![required](public\images\required.png)
+   ![required](public/images/required.png)
    - Custom **form request validation** is used for shoe creation and editing, separating validation logic from restful route controllers and making the code more organised and maintainable. It also includes data type validation, as seen in the store and update methods.
    ![validation](public/images/validation.png)
 
