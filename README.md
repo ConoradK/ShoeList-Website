@@ -29,7 +29,7 @@ This is a web application for Shoeshop, featuring Home, Create, Search, and Edit
    - **Form Input Validation**: Each filter option is marked as required in the HTML input/select tags.
    ![required](public\images\required.png)
    - Custom **form request validation** is used for shoe creation and editing, separating validation logic from restful route controllers and making the code more organised and maintainable. It also includes data type validation, as seen in the store and update methods.
-   ![validation](public\images\validation.png)
+   ![validation](public/images/validation.png)
 
 ### 3. **Pagination**
    - **Loop through Pagination Elements**: Elements are iterated through. Every element that is an array is either in an active or inactive state (determining if it is the current page or not). Also, previous and next links are enabled when necessary.
@@ -38,38 +38,41 @@ This is a web application for Shoeshop, featuring Home, Create, Search, and Edit
 ### 4. **Flash Messages**
    - Used in Search and Create pages to confirm create, delete, and update CRUD operations. Success messages are passed inside the `ShoeController` when the create or update views are returned.
    
-   ![flash_message](public\images\flash_message.png)
-   ![flash_message](public\images\flash_message1.png)
+   ![flash_message](public/images/flash_message.png)
+
+   ![flash_message1](public/images/flash_message1.png)
 
 ### 5. **Ambitious CSS**
    - **Templating and styling**: The `resources/views/layouts/app.blade.php` layout file includes CSS that is used across all views, defining page layout, form styles, and other component features.
 
 ### 6. **Logical resoning**
    - **Previous Page**: Redirect users to the previous page after editing/updating a shoe. 
-   ![logic](public\images\logic.png)
+   ![logic](public/images/logic.png)
 
 ## Good Practices
 
 ### 1. **Eloquent ORM**
    - **Laravel's Eloquent ORM**: Laravel's Eloquent ORM is used for database interactions, which simplifies query execution and eliminates the need for raw SQL. This can be observed throughout the `ShoeController` file.
-   ![eloquent](public\images\eloquent.png)
+   ![eloquent](public/images/eloquent.png)
 
 ### 2. **Resource Controllers**
    - **Resource controllers** handle CRUD operations, ensuring a standardised and easy-to-follow structure for managing shoe data.
    - **Method Spoofing** is implemented to handle PUT and DELETE requests through HTML forms, making CRUD operations more manageable.
-   ![spoofing](public\images\spoofing.png)
+   ![spoofing](public/images/spoofing.png)
 
 ### 3. **Route Binding**
    - **Route binding**: Automatically injecting model instances into the controller methods based on the route parameters, improving route readability and data consistency.
-   ![route_binding](public\images\route_binding.png)
+   ![route_binding](public/images/route_binding.png)
 
 ### 4. **Code Reusability with Blade Components**
    - Any component inside the `app.blade.php` file, such as the footer and header, is reused throughout the view files.
 
 ### 5. **Security Features**
    - **CSRF Protection**: Laravel’s built-in CSRF protection is enabled to protect the application from cross-site request forgery attacks, ensuring secure form submissions.
-   ![Crsf_protection](public\images\Crsf_protection.png)
+   ![Crsf_protection](public/images/Crsf_protection.png)
+
    - **Data Sanitisation**: User inputs are sanitised to prevent SQL injections.
-   ![data_sanitisation](public\images\data_sanitisation.png)
+   ![data_sanitisation](public/images/data_sanitisation.png)
+
 
 
