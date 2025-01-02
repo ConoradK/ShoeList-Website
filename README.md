@@ -73,6 +73,3 @@ This is a web application for Shoeshop, featuring Home, Create, Search, and Edit
 
    - **Data Sanitisation**: User inputs are sanitised to prevent SQL injections.
    ![data_sanitisation](public/images/data_sanitisation.png)
-
-
-
