@@ -1,0 +1,73 @@
+/* Table styling for displaying shoe records */
+.table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background-color: #ffe6e6; /* Light pink background for the table */
+}
+
+/* To enable horizontal scrolling */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+}
+
+/* Ensure table has enough width for the content */
+.table {
+    min-width: 650px; /* Minimum width to avoid shrinking the columns */
+}
+
+/* Styling for table headers and cells */
+.table th, .table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #dee2e6; /* Light gray border for the cells */
+}
+
+/* Styling for table header row */
+.table th {
+    background-color: red; /* Red background for headers */
+    color: white;
+}
+
+/* Alternate row coloring for better readability */
+.table tr:nth-child(even) {
+    background-color: #f8f9fa; /* Light gray background for even rows */
+}
+
+/* Button styling within the table */
+.table .btn {
+    padding: 5px 10px;
+    font-size: 0.9em;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Warning button styling within the table */
+.table .btn-warning {
+    background-color: #8B8000; /* Dark yellow color */
+    color: white;
+}
+
+/* Hover effect for warning button */
+.table .btn-warning:hover {
+    background-color: #e0a800; /* Lighter yellow on hover */
+}
+
+/* Danger button styling within the table */
+.table .btn-danger {
+    background-color: darkred;
+    color: white;
+}
+
+/* Hover effect for danger button */
+.table .btn-danger:hover {
+    background-color: red;
+}
+
+/* Ensure the table is responsive on small screens */
+@media (max-width: 767px) {
+    .table th, .table td {
+        font-size: 12px; /* Smaller font size for mobile */
+    }
+}

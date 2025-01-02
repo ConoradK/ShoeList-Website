@@ -1,0 +1,78 @@
+/* Basic body styling for font, color, and layout */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #ffe6e6; /* Light red background color */
+    color: #343a40; /* Dark gray text color */
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure body takes at least full viewport height */
+
+
+    
+    background-size: cover;
+    background-position: center;
+    height: 100vh; /* Optional: Ensures the background covers the full viewport height */
+    margin: 0; 
+}
+
+/* Header and footer styling for consistent branding */
+header, footer {
+    background-color: #8B0000; /* Dark red background for header and footer */
+    color: #ffffff; /* White text color */
+    padding: 15px;
+}
+
+/* Navigation bar styling within the header */
+header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Styling for navigation links */
+header nav a {
+    color: #ffffff; /* White text color for links */
+    font-weight: 500;
+    margin-right: 20px;
+    transition: color 0.3s; /* Smooth color transition on hover */
+    text-decoration: none; /* Remove underline */
+}
+
+/* Hover effect for navigation links */
+header nav a:hover {
+    color: #ffd1d1; /* Lighter red color on hover */
+}
+
+/* Main content styling */
+main {
+    flex-grow: 1; /* Ensures main section takes up remaining space */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Light shadow for depth */
+}
+
+/* Headers styling for consistent heading appearance */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 500;
+    color: #212529; /* Darker shade for headings */
+}
+
+/* Footer text styling */
+footer .text-center {
+    font-weight: 500;
+}
+
+
+.background-border{
+    background-color:  #ffe6e6;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow for filter card */
+    padding: 20px;
+}
+
+
+
+
+

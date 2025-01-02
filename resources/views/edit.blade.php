@@ -3,9 +3,19 @@
 @section('content') <!-- Section that will define the content inside the content section of the layout -->
     <h1>Edit Shoe</h1> <!-- Title -->
 
-    <!-- Form to edit an existing shoe
-     Submits data to the update route -->
-    <form action="{{ route('update', $shoe->{'product_code'}) }}" method="POST">
+    <!-- Display any global validation errors -->
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li> <!-- Display all validation errors -->
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <!-- Form to edit an existing shoe -->
+    <form action="{{ route('update', $shoe->product_code) }}" method="POST">
         @csrf <!-- CSRF protection to prevent Cross-Site Request Forgery attacks -->
         @method('PUT') <!-- HTTP method spoofing to send a PUT request, since HTML forms only support GET and POST -->
         

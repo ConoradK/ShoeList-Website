@@ -1,0 +1,27 @@
+/* Container styling for form fields */
+.field-container {
+    margin-bottom: 15px;
+}
+
+/* Label styling for form fields */
+.field-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.field-background{
+    background-color:  #ffe6e6;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow for filter card */
+    padding: 20px;
+}
+
+
+/* Input field styling */
+.field-input {
+    width: 100%;
+    padding: 10px 12px; /* Slightly increased padding */
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}

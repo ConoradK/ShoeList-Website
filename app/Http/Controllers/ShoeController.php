@@ -174,6 +174,7 @@ class ShoeController extends Controller
         //session pull is required so that the variables in the url are preserved
         return redirect(session()->pull('previous_page', route('search')))
             ->with('success', 'Shoe updated successfully.');
+
     }
 
     // Delete an existing shoe from the database
@@ -188,4 +189,21 @@ class ShoeController extends Controller
         // Redirect back to the previous page with a success message
         return redirect()->back()->with('success', 'Shoe deleted successfully.');
     }
+
+
+    public function autocomplete(Request $request)
+    {
+        $search = $request->input('term');
+
+        // Fetch suggestions that start with the search term
+        $suggestions = Shoe::where('name', 'LIKE', $search . '%')
+        ->take(10) // Limit the number of results
+        ->get()
+        ->pluck('name'); // Return only the names of the shoes
+
+        return response()->json($suggestions);
+    }
+
+
+
 }

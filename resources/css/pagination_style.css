@@ -1,0 +1,54 @@
+/* Pagination container */
+.pagination {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /* Allow wrapping of pagination links if needed */
+    margin-top: 20px;
+    gap: 5px;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Styles for all pagination links and spans */
+.pagination a, .pagination span {
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #333;
+    border: 1px solid #ccc;
+    transition: background-color 0.3s;
+    font-size: 14px;
+}
+
+/* Make non-current page buttons white */
+.pagination .inactive {
+    background-color: #ffe6e6;  /* White background for non-current page buttons */
+}
+
+/* Hover effect for pagination links */
+.pagination a:hover {
+    background-color: #ddd;
+}
+
+/* Active page styles */
+.pagination .active {
+    font-weight: bold;
+    color: #fff;
+    background-color: #333;
+}
+
+/* Disabled pagination items */
+.pagination .disabled {
+    color: #ccc;
+    pointer-events: none;
+}
+
+/* Mobile adjustments: when screen width is smaller than 768px */
+@media (max-width: 768px) {
+    .pagination {
+        font-size: 12px; /* Smaller font size for mobile */
+    }
+
+    .pagination a, .pagination span {
+        padding: 6px 10px; /* Reduce padding for mobile */
+    }
+}

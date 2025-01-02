@@ -1,0 +1,35 @@
+
+
+/* Custom styles specific to the Search Page */
+.filter-form .card {
+    background-color:  #ffe6e6;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow for filter card */
+    padding: 20px;
+}
+
+/* Label styling within the filter form */
+.filter-form label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Input and select box styling for filter form */
+.filter-form select, .filter-form input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Styling for smaller text within the filter form */
+.filter-form small {
+    font-size: 0.9em;
+    color: #6c757d; /* Lighter gray for subtle text */
+}
+
+/* Styling for button row within the filter form */
+.filter-form .button-row {
+    text-align: center;
+    margin-top: 20px;
+}

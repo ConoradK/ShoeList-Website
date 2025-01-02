@@ -18,3 +18,6 @@ Route::post('/store', [ShoeController::class, 'store'])->name('store');
 Route::get('/{product_code}/edit', [ShoeController::class, 'edit'])->name('edit');
 Route::put('/{product_code}/update', [ShoeController::class, 'update'])->name('update');
 Route::delete('/{product_code}/delete', [ShoeController::class, 'destroy'])->name('delete');
+
+// web.php
+Route::get('/search/autocomplete', [ShoeController::class, 'autocomplete'])->name('search.autocomplete');
