@@ -14,13 +14,21 @@
 </head>
 <body style="background-image: url('{{ asset('images/background.jpg') }}');">
 
-    <!-- Header with navigation links -->
+    <!-- Header with logo and navigation links -->
     <header>
-        <nav>
-            <a href="{{ route('home') }}">Home</a>
-            <a href="{{ route('create') }}">Create</a>
-            <a href="{{ route('search') }}">Search</a>
-        </nav>
+        <div class="header-content">
+            <!-- Shoe Logo on the left side -->
+            <div class="logo">
+                <img src="{{ asset('images/logo.png') }}" alt="Shoe Store Logo" class="logo-img">
+            </div>
+
+            <!-- Navigation bar on the right side -->
+            <nav>
+                <a href="{{ route('home') }}">Home</a>
+                <a href="{{ route('create') }}">Create</a>
+                <a href="{{ route('search') }}">Search</a>
+            </nav>
+        </div>
     </header>
 
     <!-- Main content section where page-specific content will be injected -->

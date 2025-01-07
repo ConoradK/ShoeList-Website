@@ -2,9 +2,9 @@
 .btn-primary {
     background-color: #007bff; /* Blue button color */
     color: white;
-    padding: 10px 20px;
-    font-size: 1em;
-    border-radius: 4px;
+    padding: 0.625rem 1.25rem; /* Replace 10px 20px with rem */
+    font-size: 1rem; /* Use rem for font size (1rem = 16px default) */
+    border-radius: 0.25rem; /* Replace 4px with rem */
     cursor: pointer;
 }
 

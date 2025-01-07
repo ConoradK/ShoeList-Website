@@ -1,7 +1,6 @@
 /* Basic body styling for font, color, and layout */
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #ffe6e6; /* Light red background color */
     color: #343a40; /* Dark gray text color */
     line-height: 1.6;
     margin: 0;
@@ -9,34 +8,64 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh; /* Ensure body takes at least full viewport height */
-
-
-    
-    background-size: cover;
-    background-position: center;
-    height: 100vh; /* Optional: Ensures the background covers the full viewport height */
-    margin: 0; 
+    height: 100%; /* Ensure the body can grow based on content height */
+    position: relative; /* Required for pseudo-element */
+    background-color: transparent; /* Make the background transparent */
 }
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* Ensures it covers the entire viewport */
+    background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent white overlay */
+    z-index: -1; /* Places the overlay behind the content */
+    pointer-events: none; /* Ensures overlay does not block interactions */
+}
+
 
 /* Header and footer styling for consistent branding */
 header, footer {
     background-color: #8B0000; /* Dark red background for header and footer */
     color: #ffffff; /* White text color */
-    padding: 15px;
+    padding: 0.75rem 1rem; /* Reduced padding to make header smaller */
+}
+
+/* Header Content */
+header .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 90%; /* Use percentage to make the header more responsive */
+    margin: 0 auto;
+}
+
+/* Styling for the logo */
+header .logo {
+    flex: 1; /* Allows the logo to take up its natural space */
+}
+
+header .logo-img {
+    height: auto; /* Let the height adjust automatically */
+    width: 100%; /* Let the width be responsive */
+    max-width: 8rem; /* Reduced max-width for a smaller logo */
 }
 
 /* Navigation bar styling within the header */
 header nav {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-around;
+    flex: 3; /* Ensures the nav links take up the remaining space */
 }
 
 /* Styling for navigation links */
 header nav a {
     color: #ffffff; /* White text color for links */
     font-weight: 500;
-    margin-right: 20px;
+    margin-right: 1.5rem; /* Reduced margin for smaller spacing between links */
+    font-size: 0.9rem; /* Reduced font size for a smaller header */
     transition: color 0.3s; /* Smooth color transition on hover */
     text-decoration: none; /* Remove underline */
 }
@@ -49,15 +78,9 @@ header nav a:hover {
 /* Main content styling */
 main {
     flex-grow: 1; /* Ensures main section takes up remaining space */
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Light shadow for depth */
-}
-
-/* Headers styling for consistent heading appearance */
-h1, h2, h3, h4, h5, h6 {
-    font-weight: 500;
-    color: #212529; /* Darker shade for headings */
+    padding: 2rem; /* Use rem to scale padding */
+    border-radius: 0.3125rem; /* Border radius in rem (5px) */
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.05); /* Box shadow with rem units */
 }
 
 /* Footer text styling */
@@ -65,14 +88,10 @@ footer .text-center {
     font-weight: 500;
 }
 
-
-.background-border{
+/* Background border styling for filter card */
+.background-border {
     background-color:  #ffe6e6;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow for filter card */
-    padding: 20px;
+    box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1); /* Light shadow for filter card */
+    padding: 1.25rem; /* Padding with rem units */
 }
-
-
-
-
 
