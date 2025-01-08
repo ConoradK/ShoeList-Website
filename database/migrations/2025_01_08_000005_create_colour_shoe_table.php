@@ -12,9 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('colour_shoe', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('shoe_id')->constrained('shoes')->onDelete('cascade');
-            $table->foreignId('colour_id')->constrained('colours')->onDelete('cascade');
+            $table->unsignedBigInteger('shoe_id');  // Foreign key for shoes
+            $table->unsignedBigInteger('colour_id');  // Foreign key for colours
+            $table->foreign('shoe_id')->references('id')->on('shoes')->onDelete('cascade');
+            $table->foreign('colour_id')->references('id')->on('colours')->onDelete('cascade');
+            $table->primary(['shoe_id', 'colour_id']);  // Composite primary key
         });
     }
 

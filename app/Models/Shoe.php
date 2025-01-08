@@ -15,10 +15,6 @@ class Shoe extends Model
     // because this model does not require automatic timestamp management
     public $timestamps = false;
 
-    // Specify a custom primary key for the model. By default, 
-    // Eloquent expects the primary key to be id,
-    // but we set it to product_code.
-    protected $primaryKey = 'product_code';
 
     /// Allow mass assignment for these fields
     protected $fillable = [
@@ -43,12 +39,12 @@ class Shoe extends Model
         return $this->belongsTo(Type::class);
     }
 
-    public function material()
+    public function materials()
     {
         return $this->belongsToMany(Material::class, 'material_shoe', 'shoe_id', 'material_id');
     }
 
-    public function colour()
+    public function colours()
     {
         return $this->belongsToMany(Colour::class, 'colour_shoe', 'shoe_id', 'colour_id');
     }

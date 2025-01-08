@@ -23,11 +23,11 @@ class ShoeSeeder extends Seeder
         $shoes->each(function ($shoe) {
             // Attach 1 to 3 random colours from the colours table
             $colours = Colour::inRandomOrder()->take(rand(1, 3))->pluck('id');
-            $shoe->colour()->attach($colours);
+            $shoe->colours()->attach($colours);
 
             // Attach 1 to 2 random materials from the materials table
             $materials = Material::inRandomOrder()->take(rand(1, 2))->pluck('id');
-            $shoe->material()->attach($materials);
+            $shoe->materials()->attach($materials);
         });
     }
 }

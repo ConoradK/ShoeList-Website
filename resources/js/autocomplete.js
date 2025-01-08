@@ -12,7 +12,7 @@ $(function () {
                 },
             });
         },
-        minLength: 2, // Minimum characters before suggestions appear
+        minLength: 1, // Minimum characters before suggestions appear
     });
 });
 

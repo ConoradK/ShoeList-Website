@@ -16,7 +16,6 @@
     @endpush
 
     @push('scripts')
-        
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -28,7 +27,6 @@
         'resources/js/autocomplete.js',
         'resources/js/reset_after_search.js'
         ])
-
     @endpush
 
     <div class="search-header">
@@ -65,7 +63,9 @@
                             <label for="brand">Brand</label>
                             <select id="brand" name="brand[]" multiple>
                                 @foreach($brands as $brand)
-                                    <option value="{{ $brand }}" {{ in_array($brand, request('brand', [])) ? 'selected' : '' }}>{{ ucfirst($brand) }}</option>
+                                    <option value="{{ $brand->id }}" {{ in_array($brand->id, request('brand', [])) ? 'selected' : '' }}>
+                                        {{ ucfirst($brand->name) }}
+                                    </option>
                                 @endforeach
                             </select>
                             <small>Hold Ctrl</small>
@@ -76,7 +76,9 @@
                             <select id="type" name="type">
                                 <option value="">Select Type</option>
                                 @foreach($types as $type)
-                                    <option value="{{ $type }}" {{ request('type') == $type ? 'selected' : '' }}>{{ ucfirst($type) }}</option>
+                                    <option value="{{ $type->id }}" {{ request('type') == $type->id ? 'selected' : '' }}>
+                                        {{ ucfirst($type->name) }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -85,7 +87,9 @@
                             <label for="material">Material</label>
                             <select id="material" name="material[]" multiple>
                                 @foreach($materials as $material)
-                                    <option value="{{ $material }}" {{ in_array($material, request('material', [])) ? 'selected' : '' }}>{{ ucfirst($material) }}</option>
+                                    <option value="{{ $material->id }}" {{ in_array($material->id, request('material', [])) ? 'selected' : '' }}>
+                                        {{ ucfirst($material->name) }}
+                                    </option>
                                 @endforeach
                             </select>
                             <small>Hold Ctrl</small>
@@ -107,7 +111,9 @@
                             <label for="colours">Colour</label>
                             <select id="colours" name="colours[]" multiple>
                                 @foreach($colours as $colour)
-                                    <option value="{{ $colour }}" {{ in_array($colour, request('colours', [])) ? 'selected' : '' }}>{{ ucfirst($colour) }}</option>
+                                    <option value="{{ $colour->id }}" {{ in_array($colour->id, request('colours', [])) ? 'selected' : '' }}>
+                                        {{ ucfirst($colour->name) }}
+                                    </option>
                                 @endforeach
                             </select>
                             <small>Hold Ctrl</small>
@@ -143,17 +149,25 @@
                             @foreach($shoes as $shoe)
                                 <tr>
                                     <td>{{ $shoe->name }}</td>
-                                    <td>{{ $shoe->brand }}</td>
-                                    <td>{{ $shoe->type }}</td>
-                                    <td>{{ $shoe->material }}</td>
+                                    <td>{{ $shoe->brand->name }}</td>
+                                    <td>{{ $shoe->type->name }}</td>
+                                    <td>
+                                        @foreach($shoe->materials as $material)
+                                            {{ $material->name }}@if(!$loop->last), @endif
+                                        @endforeach
+                                    </td>
                                     <td>{{ $shoe->price }}</td>
-                                    <td>{{ $shoe->colour }}</td>
+                                    <td>
+                                        @foreach($shoe->colours as $colour)
+                                            {{ $colour->name }}@if(!$loop->last), @endif
+                                        @endforeach
+                                    </td>
                                     <td>{{ $shoe->stock }}</td>
                                     <td>{{ $shoe->release_date }}</td>
                                     <td>
-                                        <a href="{{ route('edit', $shoe->product_code) }}" class="btn btn-warning">Edit</a>
+                                        <a href="{{ route('edit', $shoe->id) }}" class="btn btn-warning">Edit</a>
                                         </br>
-                                        <form action="{{ route('delete', $shoe->product_code) }}" method="POST" style="display:inline-block;">
+                                        <form action="{{ route('delete', $shoe->id) }}" method="POST" style="display:inline-block;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger">Delete</button>

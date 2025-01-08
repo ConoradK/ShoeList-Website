@@ -15,7 +15,7 @@
     @endif
 
     <!-- Form to edit an existing shoe -->
-    <form action="{{ route('update', $shoe->product_code) }}" method="POST">
+    <form action="{{ route('update', $shoe->id) }}" method="POST">
         @csrf <!-- CSRF protection to prevent Cross-Site Request Forgery attacks -->
         @method('PUT') <!-- HTTP method spoofing to send a PUT request, since HTML forms only support GET and POST -->
         
