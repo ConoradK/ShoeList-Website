@@ -14,15 +14,13 @@ return new class extends Migration
     {
         // Create the "shoes" table with the specified columns
         Schema::create('shoes', function (Blueprint $table) {
-            $table->id('product_code');
-            $table->string('name');
-            $table->string('brand');
-            $table->string('type');
-            $table->string('material');
-            $table->decimal('price',total:12 ,places:2);
-            $table->string('colour');
-            $table->integer('stock');
-            $table->date('release_date');
+            $table->id(); // Primary key
+            $table->string('name'); // Shoe name
+            $table->foreignId('brand_id')->constrained('brands')->onDelete('cascade'); // Foreign key for brands
+            $table->foreignId('type_id')->constrained('types')->onDelete('cascade'); // Foreign key for types
+            $table->decimal('price', 12, 2); // Price
+            $table->integer('stock'); // Stock quantity
+            $table->date('release_date'); // Release date
         });
     }
 

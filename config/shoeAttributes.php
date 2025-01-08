@@ -23,5 +23,9 @@ return [
         'Faux Leather', 'Patent Leather', 'Fur', 
         'Recycled Plastic'
     ],
+
+    'colours' => [
+        'Red', 'Blue', 'Green', 'Black', 'White', 'Yellow', 'Orange', 
+        'Purple', 'Pink', 'Gray', 'Brown', 'Beige', 'Silver', 'Gold',
+    ]
 ];
-//Above are lists for generating random materials, types and brands
