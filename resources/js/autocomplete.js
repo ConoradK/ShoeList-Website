@@ -15,5 +15,3 @@ $(function () {
         minLength: 1, // Minimum characters before suggestions appear
     });
 });
-
-//code size much smaller
