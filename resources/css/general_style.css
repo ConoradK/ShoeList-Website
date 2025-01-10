@@ -105,11 +105,11 @@ footer .text-center {
 .dropbtn {
     background-color: #4CAF50; /* Green background color */
     color: white;              /* White text */
-    padding: 14px 20px;        /* Some padding */
-    font-size: 16px;           /* Font size */
+    padding: 0.875rem 1.25rem; /* Padding using rem (14px = 0.875rem, 20px = 1.25rem) */
+    font-size: 1rem;           /* Font size (16px = 1rem) */
     border: none;              /* Remove border */
     cursor: pointer;          /* Pointer cursor on hover */
-    border-radius: 5px;        /* Rounded corners */
+    border-radius: 0.3125rem;  /* Rounded corners (5px = 0.3125rem) */
     transition: background-color 0.3s ease; /* Smooth background transition */
 }
 
@@ -123,10 +123,10 @@ footer .text-center {
     display: none;             /* Hidden by default */
     position: absolute;        /* Absolute position to overlay the content */
     background-color: #f9f9f9; /* Light gray background */
-    min-width: 160px;          /* Minimum width of the dropdown */
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    min-width: 10rem;          /* Minimum width of the dropdown (160px = 10rem) */
+    box-shadow: 0px 0.5rem 1rem rgba(0, 0, 0, 0.2); /* Subtle shadow (8px = 0.5rem, 16px = 1rem) */
     z-index: 1;                /* Ensure dropdown is on top */
-    border-radius: 5px;        /* Rounded corners for the dropdown */
+    border-radius: 0.3125rem;  /* Rounded corners for the dropdown (5px = 0.3125rem) */
 }
 
 /* Show the dropdown when hovering over the Account button */
@@ -136,13 +136,13 @@ footer .text-center {
 
 /* Style for each item in the dropdown */
 .dropdown-content a {
-    color: black;               /* Black text */
-    padding: 12px 16px;         /* Padding to give the item some space */
+    color: black;              /* Black text */
+    padding: 0.75rem 1rem;     /* Padding using rem (12px = 0.75rem, 16px = 1rem) */
     text-decoration: none;      /* Remove underline */
     display: block;             /* Block display to make the entire item clickable */
     width: 100%;                /* Ensure the anchor takes up the full width */
     box-sizing: border-box;     /* Include padding in width calculation */
-    border-bottom: 1px solid #ddd; /* Light border between items */
+    border-bottom: 0.0625rem solid #ddd; /* Light border between items (1px = 0.0625rem) */
 }
 
 /* Hover effect for items in the dropdown */
@@ -154,6 +154,7 @@ footer .text-center {
 .dropdown:hover .dropbtn {
     background-color: #45a049; /* Darker green background when hovering over the Account button */
 }
+
 
 
 

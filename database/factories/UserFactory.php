@@ -30,10 +30,4 @@ class UserFactory extends Factory
             'role' => 'user', // Default role
         ];
     }
-
-
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    
 }

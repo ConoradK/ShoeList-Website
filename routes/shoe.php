@@ -2,52 +2,29 @@
 
 use App\Http\Controllers\ShoeController;
 use Illuminate\Support\Facades\Route;
-//use App\Http\Middleware\AdminMiddleware;
-//use App\Http\Kernel;
 
-// Define the root route ('/') which will render the 'welcome' view
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
 // Shoes routes with consistent shoes/{id}/action format
-Route::get('/', [ShoeController::class, 'home'])->name('home');
-Route::get('/search', [ShoeController::class, 'index'])->name('search');
+Route::get('/', [ShoeController::class, 'home'])->name('home'); // Home route for the shoe store
+Route::get('/search', [ShoeController::class, 'index'])->name('search'); // Search route to filter shoes
 
-
-// Routes with id parameter before the action
-// Route::get('/{id}/edit', [ShoeController::class, 'edit'])->name('edit');
-// Route::put('/{id}/update', [ShoeController::class, 'update'])->name('update');
-// Route::delete('/{id}/delete', [ShoeController::class, 'destroy'])->name('delete');
 
 // Autocomplete search route
-Route::get('/search/autocomplete', [ShoeController::class, 'autocomplete'])->name('search.autocomplete');
+Route::get('/search/autocomplete', [ShoeController::class, 'autocomplete'])->name('search.autocomplete'); // Autocomplete search for shoe names
 
 
-// Route::post('/favorites/{shoe}', [ShoeController::class, 'addToFavorites'])->name('favorites.add')->middleware('auth');
-
-
+// Routes accessible to authenticated users with 'user' role
 Route::middleware(['auth', 'user'])->group(function () {
-    Route::post('/favorites/add/{shoe}', [ShoeController::class, 'addToFavorites'])->name('favorites.add');
-    Route::post('/remove-from-favourites/{shoe}', [ShoeController::class, 'removeFromFavourites'])->name('favorites.remove');
-
+    Route::post('/favorites/add/{shoe}', [ShoeController::class, 'addToFavorites'])->name('favorites.add'); // Add shoe to favorites
+    Route::post('/remove-from-favourites/{shoe}', [ShoeController::class, 'removeFromFavourites'])->name('favorites.remove'); // Remove shoe from favorites
 });
 
 
-
-
-// Apply 'auth' and 'admin' middleware for create and store routes
-// Route::middleware(['auth', 'admin'])->group(function () {
-//     Route::get('/create', [ShoeController::class, 'create'])->name('create');
-//     Route::post('/store', [ShoeController::class, 'store'])->name('store');
-// });
-
-
+// Routes accessible to authenticated users with 'admin' role
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/shoes/{id}/edit', [ShoeController::class, 'edit'])->name('edit');
-    Route::put('/shoes/{id}', [ShoeController::class, 'update'])->name('update');
-    Route::delete('/shoes/{id}', [ShoeController::class, 'destroy'])->name('delete');
-    Route::get('/create', [ShoeController::class, 'create'])->name('create');
-    Route::post('/store', [ShoeController::class, 'store'])->name('store');
-
+    Route::get('/shoes/{id}/edit', [ShoeController::class, 'edit'])->name('edit'); // Edit shoe details
+    Route::put('/shoes/{id}', [ShoeController::class, 'update'])->name('update'); // Update shoe details
+    Route::delete('/shoes/{id}', [ShoeController::class, 'destroy'])->name('delete'); // Delete a shoe
+    Route::get('/create', [ShoeController::class, 'create'])->name('create'); // Create a new shoe form
+    Route::post('/store', [ShoeController::class, 'store'])->name('store'); // Store new shoe in the database
 });

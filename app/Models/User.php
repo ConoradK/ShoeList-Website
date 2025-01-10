@@ -29,7 +29,7 @@ class User extends Authenticatable
         'role' => 'string', // If 'role' is an enum, it will be cast to string
     ];
 
-    // You can also add a custom method to check the user's role
+    // custom method to check the user's role
     public function isAdmin()
     {
         return $this->role === 'admin';
@@ -41,23 +41,18 @@ class User extends Authenticatable
     }
 
 
-    // public function setRoleAttribute($value)
-    // {
-    //     // Set a default role if none is provided
-    //     $this->attributes['role'] = $value ?? 'user'; // Defaults to 'user'
-    // }
-
-    // In app/Models/User.php
+    
+    // Find the user by their username for Passport authentication
     public function findForPassport($username)
     {
         return $this->where('username', $username)->first();
     }
 
-
-
+    // Define a many-to-many relationship between the user and shoes
     public function shoes()
     {
         return $this->belongsToMany(Shoe::class, 'user_shoe', 'user_id', 'shoe_id');
     }
+
 
 }

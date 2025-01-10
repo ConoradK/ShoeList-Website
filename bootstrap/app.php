@@ -13,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Register the 'admin' middleware alias
+        // Register 'admin' middleware alias
         $middleware->alias([
             'admin' => AdminMiddleware::class,
             'user' => UserMiddleware::class,
