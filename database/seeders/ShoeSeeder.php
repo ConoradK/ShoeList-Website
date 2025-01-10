@@ -7,10 +7,9 @@ use App\Models\Colour;
 use App\Models\Material;
 use App\Models\Brand;
 use App\Models\Type;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
-
 
 class ShoeSeeder extends Seeder
 {
@@ -28,6 +27,13 @@ class ShoeSeeder extends Seeder
             // Attach 1 to 2 random materials from the materials table
             $materials = Material::inRandomOrder()->take(rand(1, 2))->pluck('id');
             $shoe->materials()->attach($materials);
+        });
+
+        // Assign 2 to 5 favorite shoes to each normal user
+        $users = User::where('role', 'user')->get();
+        $users->each(function ($user) use ($shoes) {
+            $favoriteShoes = $shoes->random(rand(2, 5))->pluck('id');
+            $user->shoes()->attach($favoriteShoes);
         });
     }
 }

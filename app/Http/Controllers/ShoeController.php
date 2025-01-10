@@ -9,6 +9,7 @@ use App\Models\Colour;
 use App\Models\Material;
 use Illuminate\Http\Request;
 
+
 class ShoeController extends Controller
 {
     // Display the home page
@@ -71,6 +72,16 @@ class ShoeController extends Controller
             });
         }
 
+           // Check if the user wants to filter by favorites
+        if ($request->has('favorites') && auth()->check()) {
+            $user = auth()->user();
+            if ($user->role !== 'admin') {
+                $query->whereHas('users', function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                });
+            }
+        }
+
         // Add eager loading for materials and colours
         $shoes = $query->with(['materials', 'colours', 'brand', 'type'])->paginate(10);
 
@@ -109,9 +120,9 @@ class ShoeController extends Controller
             'stock' => 'required|integer',
             'release_date' => 'required|date',
             'colours' => 'required|array', 
-            // 'colours.*' => 'exists:colours,id',
+            'colours.*' => 'exists:colours,id',
             'materials' => 'required|array', // Assuming materials are selected from the pivot table
-            // 'materials.*' => 'exists:materials,id',
+            'materials.*' => 'exists:materials,id',
         ]);
 
         // Create a new shoe entry
@@ -188,4 +199,43 @@ class ShoeController extends Controller
 
         return response()->json($suggestions);
     }
+
+
+
+
+    public function addToFavorites(Request $request, $shoeId)
+    {
+        // Get the currently authenticated user
+        $user = auth()->user();
+
+        // Check if the shoe is already in the user's favorites
+        if ($user->shoes()->where('shoe_id', $shoeId)->exists()) {
+            return redirect()->back()->with('error', 'This shoe is already in your favorites.');
+        }
+
+        // Add the shoe to the user's favorites
+        $user->shoes()->attach($shoeId);
+
+        return redirect()->back()->with('success', 'Shoe added to your favorites!');
+    }
+
+
+    public function removeFromFavourites(Request $request, $shoeId)
+    {
+        // Get the currently authenticated user
+        $user = auth()->user();
+
+        // Check if the shoe is in the user's favorites
+        if (!$user->shoes()->where('shoe_id', $shoeId)->exists()) {
+            return redirect()->back()->with('error', 'This shoe is not in your favorites!');
+        }
+
+        // Remove the shoe from the user's favorites
+        $user->shoes()->detach($shoeId);
+
+        return redirect()->back()->with('success', 'Shoe removed from your favorites!');
+    }
+
+
+
 }

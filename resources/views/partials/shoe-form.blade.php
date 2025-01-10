@@ -54,16 +54,16 @@
             <label for="material" class="field-label">Material</label>
             <select class="field-input" id="material" name="materials[]" multiple required>
                 @foreach($materials as $material)
-                <option value="{{ $material->id }}" 
-                    {{ in_array($material->id, old('materials', isset($shoe) ? $shoe->materials->pluck('id')->toArray() : [])) ? 'selected' : '' }}>
-                    {{ ucfirst($material->name) }}
-                </option>
-
+                    <option value="{{ $material->id }}" 
+                        {{ in_array($material->id, old('materials', isset($shoe) ? $shoe->materials->pluck('id')->toArray() : [])) ? 'selected' : '' }}>
+                        {{ ucfirst($material->name) }}
+                    </option>
                 @endforeach
             </select>
             @error('materials')
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
+            <small>Hold Ctrl</small>
         </div>
 
         <!-- Price -->
@@ -80,15 +80,16 @@
             <label for="colour" class="field-label">Colour</label>
             <select class="field-input" id="colour" name="colours[]" multiple required>
                 @foreach($colours as $colour)
-                <option value="{{ $colour->id }}" 
-                    {{ in_array($colour->id, old('colours', isset($shoe) ? $shoe->colours->pluck('id')->toArray() : [])) ? 'selected' : '' }}>
-                    {{ ucfirst($colour->name) }}
-                </option>
+                    <option value="{{ $colour->id }}" 
+                        {{ in_array($colour->id, old('colours', isset($shoe) ? $shoe->colours->pluck('id')->toArray() : [])) ? 'selected' : '' }}>
+                        {{ ucfirst($colour->name) }}
+                    </option>
                 @endforeach
             </select>
             @error('colours')
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
+            <small>Hold Ctrl</small>
         </div>
 
         <!-- Stock -->
@@ -107,6 +108,6 @@
             @error('release_date')
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
-        </div>
+        </div>        
     </div>
 </div>

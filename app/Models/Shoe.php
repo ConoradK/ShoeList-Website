@@ -49,6 +49,12 @@ class Shoe extends Model
         return $this->belongsToMany(Colour::class, 'colour_shoe', 'shoe_id', 'colour_id');
     }
 
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_shoe', 'shoe_id', 'user_id');
+    }
+
     // Mutators: These are methods that modify the data before it's saved to the database.
     // Here, we use mutators to ensure that the first letter of certain fields 
     // is capitalised before saving them to the database.

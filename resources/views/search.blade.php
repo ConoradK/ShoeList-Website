@@ -22,10 +22,10 @@
 
         <!-- Include the custom delete button JavaScript -->
         @vite([
-        'resources/js/delete_button.js',
-        'resources/js/filter_toggle.js',
-        'resources/js/autocomplete.js',
-        'resources/js/reset_after_search.js'
+            'resources/js/delete_button.js',
+            'resources/js/filter_toggle.js',
+            'resources/js/autocomplete.js',
+            'resources/js/reset_after_search.js'
         ])
     @endpush
 
@@ -48,6 +48,10 @@
     @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
+        </div>    
+    @elseif(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
         </div>
     @endif
 
@@ -119,6 +123,14 @@
                             <small>Hold Ctrl</small>
                         </div>
 
+                        @if(Auth::check() && Auth::user()->role === 'user')
+                            <!-- Only show "Favorites" filter for normal users -->
+                            <div>
+                                <label for="favorites">Show Favorites</label>
+                                    <input type="checkbox" name="favorites" id="favorites" value="1" {{ request('favorites') == '1' ? 'checked' : '' }}>
+                            </div>
+                        @endif
+
                         <div class="button-row">
                             <button type="submit" class="btn-primary">Apply</button>
                             <a href="{{ route('search') }}" class="btn-reset">Clear</a>
@@ -142,7 +154,12 @@
                                 <th>Colour</th>
                                 <th>Stock</th>
                                 <th>Release Date</th>
-                                <th>Actions</th>
+                                @if(Auth::check() && Auth::user()->role === 'admin')
+                                    <th>Actions</th>
+                                @endif
+                                @if(Auth::check() && Auth::user()->role === 'user')
+                                    <th>Favorites</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -164,15 +181,42 @@
                                     </td>
                                     <td>{{ $shoe->stock }}</td>
                                     <td>{{ $shoe->release_date }}</td>
-                                    <td>
-                                        <a href="{{ route('edit', $shoe->id) }}" class="btn btn-warning">Edit</a>
-                                        </br>
-                                        <form action="{{ route('delete', $shoe->id) }}" method="POST" style="display:inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                        </form>
-                                    </td>
+                                    @if(Auth::check() && Auth::user()->role === 'admin')
+                                        <td>
+                                            <a href="{{ route('edit', $shoe->id) }}" class="btn btn-warning">Edit</a>
+                                            <form action="{{ route('delete', $shoe->id) }}" method="POST" style="display:inline-block;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger" >Delete</button>
+                                            </form>
+                                        </td>
+                                    @endif
+                                    @if(Auth::check() && Auth::user()->role === 'user')
+                                        <td>
+                                            @php
+                                                // Check if the shoe is already in the user's favourites
+                                                $isFavourite = Auth::user()->shoes->contains($shoe->id);
+                                            @endphp
+
+                                            @if($isFavourite)
+                                                <!-- Show blue button to remove from favorites -->
+                                                <form action="{{ route('favorites.remove', $shoe->id) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <i class="fas fa-star"></i>
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <!-- Show normal button to add the shoe to favourites -->
+                                                <form action="{{ route('favorites.add', $shoe->id) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-light">
+                                                        <i class="fas fa-star"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>

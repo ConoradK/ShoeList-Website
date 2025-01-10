@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             TypeSeeder::class,
             ColourSeeder::class,
             MaterialSeeder::class,
+            UserSeeder::class
         ]);
 
         // Then, seed the shoes

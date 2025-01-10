@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const filterOptions = document.querySelector(".filter-options");
     const filterButton = document.getElementById("filter-btn");
 
+    // Ensure the filter options and button exist before attaching event listeners
     if (!filterOptions || !filterButton) {
         console.error("Filter options or button not found in the DOM.");
         return;
@@ -21,30 +22,39 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    if (window.innerWidth < 1024) {
-        // Set initial state based on computed style
-        isFilterOpen = window.getComputedStyle(filterOptions).display !== "none";
+    // Reattach the filter listener after page loads or refreshes (e.g., after login)
+    function reattachFilterListener() {
+        if (window.innerWidth < 1024) {
+            filterButton.addEventListener("click", toggleFilter);
 
-        filterButton.addEventListener("click", toggleFilter);
-
-        // Prevent closing when clicking inside the filter area
-        filterOptions.addEventListener("click", function (event) {
-            event.stopPropagation();
-        });
+            // Prevent closing when clicking inside the filter area (if filter is open)
+            filterOptions.addEventListener("click", function (event) {
+                if (isFilterOpen) {
+                    event.stopPropagation(); // Prevent the filter from closing
+                }
+            });
+        }
     }
 
-    // Ensure filter options are always visible on large screens
+    // Initial setup and ensure the listener is attached
+    reattachFilterListener();
+
+    // Ensure the filter options remain visible on large screens
     window.addEventListener("resize", function () {
         if (window.innerWidth >= 1024) {
-            filterOptions.style.display = "block"; // Always show filter options
-            isFilterOpen = true;
+            // On large screens, always show the filter options
+            filterOptions.style.display = "block"; 
+            isFilterOpen = true; // Make sure it is marked as open
         } else {
-            // For small screens, hide if it was closed or show if it was open
+            // On small screens, we need to adjust the filter options display based on the previous state
             if (isFilterOpen) {
                 filterOptions.style.display = "block";
             } else {
                 filterOptions.style.display = "none";
             }
+            
+            // Reattach the filter button listener if not already done
+            reattachFilterListener();
         }
     });
 });
