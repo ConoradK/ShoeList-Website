@@ -17,6 +17,7 @@ run ```npm install``` in Git Bash.
 Insatll XAMPP and run Apache and MySQL.
 
 replace lines 252 and 253 in Apache(httpd.conf) with :
+<br>
    ```DocumentRoot "/xampp/htdocs/Assignment-2-Web-development/public"```
    ```<Directory "/xampp/htdocs/Assignment-2-Web-development/public"> ```
 
@@ -42,6 +43,18 @@ in Git Bash.
 
 8. 
 Run ```npm run dev``` in Git Bash.
+
+9. 
+The login credentials are username, password:
+<br>
+<br>
+adminuser, adminpassword
+<br>
+<br>
+normaluser1, normalpassword1
+<br>
+<br>
+normaluser2, normalpassword2
 
 
 <br>
@@ -92,7 +105,7 @@ Schema::create('shoes', function (Blueprint $table) {
    $table->date('release_date'); // Release date
 });
 ```
-As seen above The database was reworked on to allow for multiple colour and material attribbute for for a shoe. This meant normilising the databse to at least 3NF.  Colour and material have a "Pivot" table, meaning that each shoe can have multiple colours and materials. This is essential as that is the case with most shoes in the real world. The database hasn't been checked for 4NF OR 5NF meaning that in future development, problems can arise when more complex CRUD operations are added to the website. In addition, pivot table is used for user_shoe table, which stores all of the user's favourite shoes. With larger number of users and and larger favourite shoe lists indexing can become slow.
+As seen above The database was reworked on to allow for multiple colour and material attribute for a shoe. This meant normalising the database to at least 3NF.  Colour and material have a "Pivot" table, meaning that each shoe can have multiple colours and materials. This is essential as that is the case with most shoes in the real world. The database hasn't been checked for 4NF OR 5NF meaning that in future development, problems can arise when more complex CRUD operations are added to the website. In addition, pivot table is used for user_shoe table, which stores all of the user's favourite shoes. With larger number of users and and larger favourite shoe lists indexing can become slow.
 
 
 <br>
@@ -192,7 +205,7 @@ public function logout(Request $request)
     }
 ```
 
-Above are the methods allow for login/logout. When the login form is submited the credentials are stored in a variable. Authh::attemp() is an included class method that allows for validation user logins in Laravel. The above Authentication Controller doesn't inlcude all the Laravel's methods for handling the user accounts. For example creating a new user account. These can be implemented in the future, but for simplicity only login and logout features are included. When logging in, sessions are automatically created as Laravel handles it, and then when logging out the session is made manually invalid, to prevent unwanted user actions.
+Above are the methods allow for login/logout. When the login form is submited the credentials are stored in a variable. Authh::attemp() is an included class method that allows for validation user logins in Laravel. The above Authentication Controller doesn't inlcude all the Laravel's methods for handling the user accounts, for example creating a new user account. These can be implemented in the future, but for simplicity only login and logout features are included. When logging in, sessions are automatically created as Laravel handles it, and then when logging out the session is made manually invalid, to prevent unwanted user actions.
 
 <br>
 
@@ -255,7 +268,7 @@ public function handle(Request $request, Closure $next)
         return redirect()->route('login')->with('error', 'Please log in to continue.');
     }
 ```
-Say that user also has the same setup for middleware. The middlware is essential for handling authorisation for certain features of the website. in the above we do a simple check, which validates that the current logged in user is of the correct user role(no redirects happen). The middleware is always used in between actions in the website. Without this setup, authentication would have to happen in each method of the ShoeController/AuthController(mainly in the ShoeController). Therefore, the above method handle ensures a quick and easy authentication. There aren't any weaknesses.
+User also has the same setup for middleware. The middlware is essential for handling authorisation for certain features of the website. in the above we do a simple check, which validates that the current logged in user is of the correct user role(no redirects happen). The middleware is always used in between actions in the website. Without this setup, authentication would have to happen in each method of the ShoeController/AuthController(mainly in the ShoeController). Therefore, the above method handle ensures a quick and easy authentication. There aren't any weaknesses.
 
 <br>
 
@@ -317,7 +330,7 @@ Laravel has a convention where all custom middlewares must be declared above.
    <a href="{{ route('create') }}">Create</a>
 @endif
 ```
-The above code ensures that only admin users have the view and access to the create page in the header. The reason why the create is only visible to admins, is beacause ensures an easy experience for other non-admin users. This feature ensure no mistakes caused by other users. This feature has been implemented well.
+The above code ensures that only admin users have the view and access to the create page in the header. The reason why the create is only visible to admins, is beacause it ensures an easy experience for other non-admin users. This feature ensure no mistakes caused by other users. This feature has been implemented well.
 
 <br>
 
