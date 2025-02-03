@@ -12,37 +12,47 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    public $timestamps = false;
+
     protected $fillable = [
-        'name',
-        'email',
+        'username',
         'password',
+        'role',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    protected $casts = [
+        'role' => 'string', // If 'role' is an enum, it will be cast to string
+    ];
+
+    // custom method to check the user's role
+    public function isAdmin()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->role === 'admin';
     }
+
+    public function isUser()
+    {
+        return $this->role === 'user';
+    }
+
+
+    
+    // Find the user by their username for Passport authentication
+    public function findForPassport($username)
+    {
+        return $this->where('username', $username)->first();
+    }
+
+    // Define a many-to-many relationship between the user and shoes
+    public function shoes()
+    {
+        return $this->belongsToMany(Shoe::class, 'user_shoe', 'user_id', 'shoe_id');
+    }
+
+
 }

@@ -2,190 +2,303 @@
 
 namespace App\Http\Controllers;
 
-// Import model and class for handling HTTP requests
-use App\Models\shoe;
+use App\Models\Shoe;
+use App\Models\Brand;
+use App\Models\Type;
+use App\Models\Colour;
+use App\Models\Material;
 use Illuminate\Http\Request;
 
 class ShoeController extends Controller
 {
-    // Display the home page
+    /**
+     * Display the home page.
+     * 
+     * This method returns the home view for the shoe store.
+     *
+     * @return \Illuminate\View\View
+     */
     public function home()
     {
-        // Return the home view to the user
         return view('home');
     }
 
-    // Display the search page with filters and pagination
+    /**
+     * Show a list of shoes, applying filters 
+     *
+     * This method fetches shoes from the database and applies filters based on the user's request.
+     * The results are paginated and displayed in the 'search' view.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\View\View
+     */
     public function index(Request $request)
     {
-        // Initialise a query for the Shoe model
         $query = Shoe::query();
 
-        // Apply filters if the corresponding request parameters exist
+        // Filter shoes by name if provided
         if ($request->has('name') && $request->name != '') {
-            // Filter shoes by name using a 'like' search
-            $query->where('name', 'like', '%' . $request->name . '%'); 
+            $query->where('name', 'like', '%' . $request->name . '%');
         }
 
+        // Apply the brand filter if selected
         if ($request->has('brand') && !empty($request->brand)) {
-            // Filter shoes by brand (multiple brands can be selected)
-            $query->whereIn('brand', $request->brand);
-        }
-    
-        if ($request->has('type') && $request->type != '') {
-            // Filter shoes by type (only one type can be selected)
-            $query->where('type', $request->type);
-        }
-    
-        if ($request->has('material') && !empty($request->material)) {
-            // Filter shoes by material (multiple materials can be selected)
-            $query->whereIn('material', $request->material);
-        }
-        
-        if ($request->has('colours') && !empty($request->colours)) {
-            // Filter shoes by colours (multiple colours can be selected)
-            $query->whereIn('colour', $request->colours);
+            $query->whereIn('brand_id', $request->brand);
         }
 
-        // Apply price range filter based on user selection
+        // Apply the type filter (single selection)
+        if ($request->has('type') && $request->type != '') {
+            $query->where('type_id', $request->type);
+        }
+
+        // Apply the price filter based on predefined ranges
         if ($request->has('price') && $request->price != '') {
             switch ($request->price) {
                 case 'under50':
-                    // Shoes priced under 50
                     $query->where('price', '<', 50);
                     break;
                 case '50to100':
-                    // Shoes priced between 50 and 100
                     $query->whereBetween('price', [50, 100]);
                     break;
                 case '100to250':
-                    // Shoes priced between 100 and 250
                     $query->whereBetween('price', [100, 250]);
                     break;
                 case '250to500':
-                    // Shoes priced between $250 and 500
                     $query->whereBetween('price', [250, 500]);
                     break;
                 case '500plus':
-                    // Shoes priced over 500
                     $query->where('price', '>', 500);
                     break;
             }
         }
 
-        // Displaying 10 shoes per page
-        $shoes = $query->paginate(10);
+        // Filter by colors and materials using pivot tables
+        if ($request->has('colours') && !empty($request->colours)) {
+            $query->whereHas('colours', function ($query) use ($request) {
+                $query->whereIn('colour_shoe.colour_id', $request->colours);
+            });
+        }
 
-        // Fetch dynamic values for filters from the database for brands, types, materials, and colours
-        $brands = Shoe::distinct()->pluck('brand');
-        $types = Shoe::distinct()->pluck('type');
-        $materials = Shoe::distinct()->pluck('material');
-        $colours = Shoe::distinct()->pluck('colour');
-    
-        // Return the search results along with the filter options to the search view
-        return view('search', compact('shoes', 'brands', 'types', 'materials', 'colours'));
+        if ($request->has('material') && !empty($request->material)) {
+            $query->whereHas('materials', function ($query) use ($request) {
+                $query->whereIn('material_shoe.material_id', $request->material);
+            });
+        }
+
+        // Check if the user wants to filter by their favorites
+        if ($request->has('favorites') && auth()->check()) {
+            $user = auth()->user();
+            if ($user->role !== 'admin') {
+                $query->whereHas('users', function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                });
+            }
+        }
+
+        // Eager load the related brand, type, colours, and materials to optimize performance
+        $shoes = $query->with(['materials', 'colours', 'brand', 'type'])->paginate(10);
+
+        // Fetch filter options for the front-end (brands, types, colours, materials)
+        $brands = Brand::all();
+        $types = Type::all();
+        $colours = Colour::all();
+        $materials = Material::all();
+
+        return view('search', compact('shoes', 'brands', 'types', 'colours', 'materials'));
     }
 
-    // Show the form to create a new shoe
+    /**
+     * Show the form to create a new shoe.
+     *
+     * This method returns the view where the user can input details to create a new shoe.
+     * It also fetches available brands, types, colours, and materials for the form.
+     *
+     * @return \Illuminate\View\View
+     */
     public function create()
     {
-        // Fetch predefined shoe attributes from the configuration file
-        $shoeAttributes = config('shoeAttributes');
-        
-        // Fetch distinct colours from the database
-        $colours = Shoe::distinct()->pluck('colour');
+        $brands = Brand::all();
+        $types = Type::all();
+        $colours = Colour::all();
+        $materials = Material::all();
 
-        // Return the create view, passing predefined shoe attributes and colours for selection
-        return view('create', [
-            'brands' => $shoeAttributes['brands'], // Brands list
-            'types' => $shoeAttributes['types'], // Types list
-            'materials' => $shoeAttributes['materials'], // Materials list
-            'colours' => $colours, // Colours list
-        ]);
+        return view('create', compact('brands', 'types', 'colours', 'materials'));
     }
 
-    // Store a new shoe in the database
+    /**
+     * Store a newly created shoe in the database.
+     *
+     * This method validates the input, creates a new shoe, and attaches the selected colours and materials.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
-        // Validate the request data before saving the new shoe
+        // Validate the form data
         $request->validate([
-            'name' => 'required', // Shoe name is required
-            'brand' => 'required', // Brand is required
-            'type' => 'required', // Type is required
-            'material' => 'required', // Material is required
-            'price' => 'required|numeric', // Price is required and must be numeric
-            'colour' => 'required', // Colour is required
-            'stock' => 'required|integer', // Stock quantity is required and must be an integer
-            'release_date' => 'required|date', // Release date is required and must be a valid date
+            'name' => 'required',
+            'brand_id' => 'required',
+            'type_id' => 'required',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+            'release_date' => 'required|date',
+            'colours' => 'required|array',
+            'colours.*' => 'exists:colours,id',
+            'materials' => 'required|array',
+            'materials.*' => 'exists:materials,id',
         ]);
 
-        // Create a new shoe entry in the database using the validated request data
-        Shoe::create($request->all());
-        
-        // Redirect to the create page with a success message
+        // Create a new shoe entry
+        $shoe = Shoe::create($request->except(['colours', 'materials']));
+
+        // Attach the selected colours and materials to the shoe
+        $shoe->colours()->attach($request->colours);
+        $shoe->materials()->attach($request->materials);
+
+        // Redirect back to the create page with a success message
         return redirect()->route('create')->with('success', 'Shoe created successfully.');
     }
 
-    // Show the form to edit an existing shoe
-    public function edit($productCode)
+    /**
+     * Show the form to edit an existing shoe.
+     *
+     * This method retrieves an existing shoe by ID and returns the edit form with the current details.
+     *
+     * @param int $id
+     * @return \Illuminate\View\View
+     */
+    public function edit($id)
     {
-        // Save the previous page URL for redirection after editing
         session(['previous_page' => url()->previous()]);
+        $shoe = Shoe::findOrFail($id);
+        $brands = Brand::all();
+        $types = Type::all();
+        $colours = Colour::all();
+        $materials = Material::all();
 
-        // Find the shoe by its product code, or return a 404 error if not found
-        $shoe = Shoe::where('product_code', $productCode)->firstOrFail();
-
-        // Fetch predefined shoe attributes and distinct colours for the edit form
-        $shoeAttributes = config('shoeAttributes');
-        $colours = Shoe::distinct()->pluck('colour');
-
-        // Return the edit view with the shoe details and attributes for editing
-        return view('edit', [
-            'shoe' => $shoe, // The shoe details to be edited
-            'brands' => $shoeAttributes['brands'], // Brands list
-            'types' => $shoeAttributes['types'], // Types list
-            'materials' => $shoeAttributes['materials'], // Materials list
-            'colours' => $colours, // Colours list
-        ]);
+        return view('edit', compact('shoe', 'brands', 'types', 'colours', 'materials'));
     }
 
-    // Update an existing shoe in the database
-    public function update(Request $request, $productCode)
+    /**
+     * Update the details of an existing shoe.
+     *
+     * This method validates the input, updates the shoe, and syncs the selected colours and materials.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, $id)
     {
-        // Validate the request data before updating the shoe
         $request->validate([
-            'name' => 'required', // Shoe name is required
-            'brand' => 'required', // Brand is required
-            'type' => 'required', // Type is required
-            'material' => 'required', // Material is required
-            'price' => 'required|numeric', // Price is required and must be numeric
-            'colour' => 'required', // Colour is required
-            'stock' => 'required|integer', // Stock quantity is required and must be an integer
-            'release_date' => 'required|date', // Release date is required and must be a valid date
+            'name' => 'required',
+            'brand_id' => 'required',
+            'type_id' => 'required',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+            'release_date' => 'required|date',
+            'colours' => 'required|array',
+            'materials' => 'required|array',
         ]);
 
-        // Find the shoe by product code
-        $shoe = Shoe::where('product_code', $productCode)->firstOrFail();
+        // Find and update the shoe
+        $shoe = Shoe::findOrFail($id);
+        $shoe->update($request->except(['colours', 'materials']));
 
-        // Update the shoe with the new request data
-        $shoe->update($request->all());
+        // Sync the colours and materials (update any changes)
+        $shoe->colours()->sync($request->colours);
+        $shoe->materials()->sync($request->materials);
 
-        // Redirect back to the previous page or to the search page with a success message
-        //session pull is required so that the variables in the url are preserved
+        // Redirect back to the previous page or the search page with a success message
         return redirect(session()->pull('previous_page', route('search')))
             ->with('success', 'Shoe updated successfully.');
     }
 
-    // Delete an existing shoe from the database
-    public function destroy($productCode)
+    /**
+     * Delete a shoe from the database.
+     *
+     * This method deletes a shoe by ID and redirects the user back with a success message.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy($id)
     {
-        // Find the shoe by product code
-        $shoe = Shoe::where('product_code', $productCode)->firstOrFail();
-
-        // Delete the shoe from the database
+        $shoe = Shoe::findOrFail($id);
         $shoe->delete();
 
         // Redirect back to the previous page with a success message
         return redirect()->back()->with('success', 'Shoe deleted successfully.');
+    }
+
+    /**
+     * Provide autocomplete suggestions for the shoe search.
+     *
+     * This method provides autocomplete functionality for the search field by returning shoe names
+     * that match the search term entered by the user.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function autocomplete(Request $request)
+    {
+        $search = $request->input('term');
+        $suggestions = Shoe::where('name', 'LIKE', $search . '%')
+            ->take(10)
+            ->get()
+            ->pluck('name');
+
+        return response()->json($suggestions);
+    }
+
+    /**
+     * Add a shoe to the user's favorites.
+     *
+     * This method adds a shoe to the currently authenticated user's favorites list.
+     * It ensures the shoe is not already in the user's favorites.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $shoeId
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function addToFavorites(Request $request, $shoeId)
+    {
+        $user = auth()->user();
+
+        // Check if the shoe is already in the user's favorites
+        if ($user->shoes()->where('shoe_id', $shoeId)->exists()) {
+            return redirect()->back()->with('error', 'This shoe is already in your favorites.');
+        }
+
+        // Add the shoe to the user's favorites
+        $user->shoes()->attach($shoeId);
+
+        return redirect()->back()->with('success', 'Shoe added to your favorites!');
+    }
+
+    /**
+     * Remove a shoe from the user's favorites.
+     *
+     * This method removes a shoe from the currently authenticated user's favorites list.
+     * It checks if the shoe is in the user's favorites before removing it.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $shoeId
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function removeFromFavourites(Request $request, $shoeId)
+    {
+        $user = auth()->user();
+
+        // Check if the shoe is in the user's favorites
+        if (!$user->shoes()->where('shoe_id', $shoeId)->exists()) {
+            return redirect()->back()->with('error', 'This shoe is not in your favorites!');
+        }
+
+        // Remove the shoe from the user's favorites
+        $user->shoes()->detach($shoeId);
+
+        return redirect()->back()->with('success', 'Shoe removed from your favorites!');
     }
 }

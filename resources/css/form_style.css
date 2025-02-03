@@ -1,0 +1,27 @@
+/* Container styling for form fields */
+.field-container {
+    margin-bottom: 1rem; /* Replaces 15px with rem */
+}
+
+/* Label styling for form fields */
+.field-label {
+    font-weight: bold;
+    margin-bottom: 0.3125rem; /* Replaces 5px with rem */
+    display: block;
+}
+
+/* Background styling for field containers */
+.field-background {
+    background-color: #ffe6e6;
+    box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1); /* Replaces 10px shadow with rem */
+    padding: 1.25rem; /* Replaces 20px with rem */
+}
+
+/* Input field styling */
+.field-input {
+    width: 100%;
+    padding: 0.625rem 0.75rem; /* Replaces 10px and 12px with rem */
+    font-size: 1rem; /* Base font size */
+    border: 0.0625rem solid #ccc; /* Replaces 1px border */
+    border-radius: 0.25rem; /* Replaces 4px border radius */
+}

@@ -10,6 +10,17 @@
         </div>
     @endif
 
+    <!-- Display any global validation errors -->
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li> <!-- Display all validation errors -->
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <!-- Form to create a new shoe -->
     <form action="{{ route('store') }}" method="POST">
         @csrf <!-- CSRF protection for the form -->

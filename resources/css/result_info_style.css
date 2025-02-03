@@ -1,0 +1,21 @@
+/* Style for result information */
+.result-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;  /* Limit the width to 40% of the parent container */
+    padding: 0.625rem;  /* Convert 10px to rem */
+    background-color: #ffd1d1;
+    border: 0.0625rem solid #ddd;  /* Convert 1px to rem */
+    margin: 1.25rem auto 0;  /* Convert 20px to rem */
+    box-sizing: border-box;
+    flex-wrap: wrap; /* Allow content to wrap if necessary */
+}
+
+/* Adjust the result text itself for better flexibility */
+.result-info p {
+    margin: 0;
+    font-weight: bold;
+    font-size: 1rem;  /* Keep font size as 1rem */
+    text-align: center;
+}

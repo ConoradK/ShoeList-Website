@@ -8,12 +8,18 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
+    public function run()
     {
-        // Call the ShoeSeeder class to populate the "shoes" table with sample data
+        // First, seed the reference data
+        $this->call([
+            BrandSeeder::class,
+            TypeSeeder::class,
+            ColourSeeder::class,
+            MaterialSeeder::class,
+            UserSeeder::class
+        ]);
+
+        // Then, seed the shoes
         $this->call(ShoeSeeder::class);
     }
 }

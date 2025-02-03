@@ -1,0 +1,158 @@
+/* General styles for the filter form */
+.filter-form .card {
+    background-color: #ffe6e6;
+    box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1);
+    padding: 1.25rem;
+    /* margin-bottom: 1.25rem; */
+}
+
+/* Label styling within the filter form */
+.filter-form label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.3125rem;
+}
+
+/* Input and select box styling for filter form */
+.filter-form select, .filter-form input {
+    width: 100%;
+    padding: 0.625rem;
+    border: 0.0625rem solid #ccc;
+    border-radius: 0.25rem;
+}
+
+/* Small text (e.g., instructions) in the filter form */
+.filter-form small {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/* Styling for button row within the filter form */
+.filter-form .button-row {
+    text-align: center;
+    margin-top: 1.25rem;
+}
+
+/* Header and search bar styling */
+.search-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Search bar container */
+.search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem; /* Adjust space between input and button */
+    margin: 0 auto; /* Center the search bar on the page */
+    width: 50%; /* Set the width of the search bar container */
+}
+
+/* Input field styling */
+.search-bar input {
+    width: 70%; /* Adjust the width of the input field */
+    padding: 0.625rem;
+    border-radius: 0.3125rem;
+    border: 0.0625rem solid #ccc;
+}
+
+/* Search button styling */
+.search-bar button {
+    background-color: #87CEEB;
+    border: 0.0625rem solid #ccc;
+    padding: 0.625rem;
+    cursor: pointer;
+    border-radius: 0.3125rem;
+}
+
+/* Hover effect for search button */
+.search-bar button:hover {
+    background-color: #6495ED;
+    color: white;
+}
+
+/* Filter button for small screens */
+.filter-btn {
+    background-color: #ffcc99;
+    border: 0.0625rem solid #ccc;
+    padding: 0.625rem;
+    cursor: pointer;
+    border-radius: 0.3125rem;
+    margin-right: 1rem;
+}
+
+/* Hover effect for filter button */
+.filter-btn:hover {
+    background-color: #e5e5e5;
+}
+
+/* Filter options container for small screens */
+.filter-options {
+    display: none; /* Initially hidden */
+    margin-top: 1rem;
+    transition: all 0.3s ease-in-out; /* Smooth sliding effect */
+}
+
+/* Large Screen Styles */
+@media (min-width: 1024px) {
+    /* Hide filter button on large screens */
+    .filter-btn {
+        display: none;
+    }
+
+    /* Display filter options beside the table */
+    .filter-options {
+        display: block;
+        width: 20%; /* Adjusted width of the filter form */
+        float: left; /* Ensure the filter form sits beside the table */
+        margin-right: 2rem; /* Some space between filter form and table */
+        max-height: calc(106vh); /* Set max height relative to the viewport height */
+        overflow-y: auto; /* Make it scrollable if it exceeds the height */
+        box-sizing: border-box;
+    }
+
+    /* Make the main content area flexible so both table and filter can align */
+    .main-content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    /* Ensure the table takes up remaining space beside the filter */
+    .main-table {
+        flex-grow: 1;
+        overflow: hidden;
+        max-height: 100%; /* Allow table height to grow */
+    }
+
+    /* Styling for the table container to handle the overflow */
+    .main-table-wrapper {
+        max-height: calc(100vh); /* Set max height to 100vh minus some margin/padding */
+        overflow-y: auto; /* Make the table scrollable if needed */
+    }
+
+    /* Adjust the width of the search bar */
+    .search-bar input {
+        width: 60%; /* Make the search bar input a little smaller */
+    }
+
+    /* Center the search bar on larger screens */
+    .search-bar {
+        justify-content: center;
+    }
+}
+
+/* Scrollbar styling for the filter sidebar */
+.filter-options::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+.filter-options::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 0.25rem;
+}
+
+.filter-options::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}

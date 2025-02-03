@@ -1,0 +1,16 @@
+/* Styling for Reset Filters Button */
+.btn-reset {
+    background-color: #dc3545; /* Red color */
+    color: white;
+    padding: 0.625rem 1.25rem; /* Replace 10px 20px with rem */
+    font-size: 1rem; /* Use rem for font size */
+    border-radius: 0.25rem; /* Replace 4px with rem */
+    cursor: pointer;
+    text-decoration: none; /* Remove underline */
+    border: 0.125rem solid black; /* Replace 2px with rem */
+}
+
+/* Hover effect for Reset Filters Button */
+.btn-reset:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
